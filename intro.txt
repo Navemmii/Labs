@@ -20,5 +20,4 @@ Kindly follow the steps in this link https://docs.github.com/en/enterprise-serve
 
 Step 4
 On your command line run git push <url of repo in step 1>
-Verify text file exits in your remote repo.
-
+Verify txt file exits in your remote repo.
