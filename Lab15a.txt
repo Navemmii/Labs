@@ -2,7 +2,7 @@ Step 1
 
 go to iam click on role, click on create role, select aws service, select ec2, click next, 
 search and check AmazonS3FullAccess and SSMManagedInstanceCore and click next, 
-enter role name "ec2-s3-ssm", click on create role
+enter role name "ec2-s3-ssm", click on create role.
 
 Step 2
 
