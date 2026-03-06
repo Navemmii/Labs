@@ -7,7 +7,7 @@ On AWS Console,
 Go to EC2 dashboard and click launch instances from template.
 Select the template created from previous lab.
 Select Resource tags and input key "Name" and Value "Webserver"
-Launch instance.
+Launch instance
 Click on " instances"
 Copy the Public IPv4 address or the Public DNS Address and paste on a new browser page" It should display a webpage with the private ip of your instance"
 (Hello World from ip-<private ip address>.ec2.internal)
