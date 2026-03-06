@@ -2,7 +2,7 @@ Step 1
 Login into your github account, click on create a new repo
 Give your repo the name "intro-to-aws-labs"
 Ensure Public is selected 
-Click create repository
+Click create repository.
 
 Step 2
 On your local machine, create a folder with name "AWSlabs"
