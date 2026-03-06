@@ -4,7 +4,7 @@ On VScode terminal navigate to directory AWSLabs and run command git pull https:
 Open the new file(Lab10) in the editor, to allow you add steps you took to complete the lab.
 
 Step 2 (Creating AWS programmatic access credentials)---Ignore if you already have AWS programmatic credentials
-Click on your account name on the top right of your AWS account.
+Click on your account name on the top right of your AWS account
 Scroll down and click on Security credentials
 Scroll down to "Create access key"
 Download the newly created .csv file into your local system and save.
