@@ -1,6 +1,6 @@
 Step 1 (Clone lab instructions)
 In VScode terminal, cd into the directory "intro-to-aws-lab"and run command "git pull https://github.com/awscloudessentials/intro-to-aws-lab.git" to pull the Lab2.txt file into your local machine
-Open the  Lab2.txt file in VScode editor and follow instructions to finish the lab.
+Open the  Lab2.txt file in VScode editor and follow instructions to finish the lab
 
 Step2 (Create a Key Pair)
 Login into your AWS Console 
