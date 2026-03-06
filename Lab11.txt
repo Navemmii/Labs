@@ -1,7 +1,7 @@
 Lab11a
 Step 1
 On VScode terminal navigate to directory AWSLabs and run command git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
-Open the new file(Lab11) in the editor, to allow you add steps you took to complete the lab.
+Open the new file(Lab11) in the editor, to allow you add steps you took to complete the lab
 
 
 Step 2
