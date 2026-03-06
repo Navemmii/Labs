@@ -6,7 +6,7 @@ Open the Lab14.txt file in VScode editor and follow instructions to finish the l
 Step 2
 Login into your AWS account and go to the IAM console
 Create a user "user1" 
-Give User1 console access only
+Give User1 console access only.
 
 Step 3
 Create "user2"
