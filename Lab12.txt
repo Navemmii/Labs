@@ -2,7 +2,7 @@ Lab12
 Step 1
 On VScode terminal navigate to directory AWSLabs and run command git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
 Open the new file(Lab12) in the editor, to allow you add steps you took to complete the lab.
-Create a new VPC with 10.0.0.0/16 IP block
+Create a new VPC with 10.0.0.0/16 IP block.
 Click on "create VPC"
 Select VPC only, give it a name tag "projectVPC"
 Under IPv4 CIDR input 10.0.0.0/16
