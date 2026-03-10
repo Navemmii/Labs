@@ -1,28 +1,60 @@
-Step1 (Clone lab instructions)
-On VScode terminal navigate to directory AWSLabs and run command git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
-Open the new file(Lab3) in the editor, to allow you add steps you took to complete the lab.
+Step 1: Clone Lab Instructions
+------
 
-Step2 (Editing and Launching instance from Launch Template)
-On AWS Console, 
-Go to EC2 dashboard and click launch instances from template.
-Select the template created from previous lab.
-Select Resource tags and input key "Name" and Value "Webserver"
-Launch instance
-Click on " instances"
-Copy the Public IPv4 address or the Public DNS Address and paste on a new browser page" It should display a webpage with the private ip of your instance"
-(Hello World from ip-<private ip address>.ec2.internal)
-Screenshot and send to the group chat for verification.
+Open the VSCode Terminal.
+Navigate to the AWSLabs directory
+Pull the lab repository:
+	git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
+   
+Open the Lab3 file in the editor.
+Use this file to document the steps you take to complete the lab.
 
-Step3 (Remote connection using SSH)
-Go back to your EC2 instance and connect to it using the 'aws cloud shell" not EC2 Connect.
-Upload the key pair of the instance from your local machine into the cloud shell
-Run the command ls -la to verify that your key is uploaded correctly.
-Run command sudo ssh -i "<keypair name" ec2-user@<public-ip-address>.compute-1.amazonaws.com
-To connect to your EC2 instance
-Send screenshoot for confirmation.
-Once confirmed, terminate your instance.
 
-Step3 (Documentation)
-Document all the steps in the file you have opened in the editor.
-Save and git add and git commit
-Push to your personal repo.
+Step 2: Launch an Instance from a Launch Template
+------
+
+Go to the AWS Management Console.
+Navigate to the EC2 Dashboard.
+Click Launch Instance from Template.
+Select the Launch Template created in the previous lab.
+Under Resource Tags, add:
+	- Key: Name
+	- Value: Webserver
+
+Click Launch Instance.
+After the instance launches, go to Instances and select the running instance
+Copy either:
+	- Public IPv4 Address, or
+	- Public DNS Address
+
+Paste the address into a new browser tab.
+You should see a webpage displaying something like:
+
+	Hello World from ip-<private-ip-address>.ec2.internal
+
+Take a screenshot and send it to the group chat for verification.
+
+
+Step 3: Remote Connection Using SSH (CloudShell)
+------
+
+Go back to your EC2 Dashboard.
+Open AWS CloudShell (do not use EC2 Instance Connect).
+Upload your Key Pair file (.pem) from your local machine to CloudShell.
+Verify the key file exists:
+	ls -la
+
+Connect to the EC2 instance using SSH:
+	sudo ssh -i "<keypair-name>.pem" ec2-user@<public-ip-address>.compute-1.amazonaws.com
+
+Once connected successfully, take a screenshot for confirmation.
+After verification, terminate the EC2 instance.
+
+
+Step 4: Documentation and Submission
+------
+
+Go back to VSCode.
+Document all the steps you followed in the Lab3 file.
+Save the file.
+Push the changes to your personal GitHub repository.
