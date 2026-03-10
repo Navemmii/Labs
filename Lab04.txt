@@ -1,41 +1,96 @@
-Step1 (Clone lab instructions)
-On VScode terminal navigate to directory AWSLabs and run command git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
-Open the new file(Lab3) in the editor, to allow you add steps you took to complete the lab.
+Step 1: Clone Lab Instructions
+------
 
-Step 2:(NB: Use key pair and security group created in former lab)
-Launch an EC2 Instance.
-SSH into your instance and create a text file with name "ebs_backup.txt" using the command sudo touch "ebs_backup.txt"
-Run command ls -la and send screenshot for confirmation
-Go to Elastic Block Store tab, click Snapshots.
-Create snapshot, select "Instance", select your instance ID from the drop down button
-Give description "snapshot from instance1", Tag Key= Name and Value= snapshot1
-Create snapshot
-Wait for snapshot status to show" Completed" then terminate your instance. 
+Open the VSCode Terminal.
+Navigate to the AWSLabs directory
+Pull the lab repository:
+	git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
 
-Step 3
-Go to Elastic Block Store tab, click Snapshots
-Select the snapshot created above, go to actions select "create volume from snapshot"
-Note the AZ, add Tag Tag Key= Name and Value=Restored volume
-Delete your snapshot.
-Go to Elastic Block Store tab, click Volume, verify the existance of your new volume.
+Open the file Lab03.txt in the editor.
+Document the steps you take while completing the lab inside this file.
 
-Step 4 (NB: Use key pair and security group created in former lab)
-Spin up another instance in the same AZ that you created the restored volume.
-Select the correct AZ under network settings
-Create instance.
-Stop your instance( not terminate), note the name of the volume attached to the instance.
-Go to Elastic Block Store tab, click Volumes
-Select the volume attached to the instance, click detach volume then
-Select the Restored volume showing status available,click actions, click attach volume
-Select your new instance from the drop down button,modify the volume name path from /dev/sdf to /dev/xvda and click attach volume.
-Delete the volume you just detached.
+ 
+Step 2: Launch EC2 Instance and Create Snapshot
+------
 
-Step 5
-Select the new instance, start the instance.
-SSH into the new instance and run command ls -la
-This should show the file name "ebs_backup.txt"
-Send screenshot for confirmation.
+Note: Use the Key Pair and Security Group created in the previous lab.
+Launch a new EC2 Instance.
+SSH into the instance.
+Create a text file:
+	sudo touch ebs_backup.txt
+   
+Confirm the file exists:
+	ls -la
+   
+Take a screenshot for confirmation.
+Go to Elastic Block Store → Snapshots.
+Click Create Snapshot and configure:
+	- Resource Type: Instance
+	- Select your Instance ID
+	- Description: Snapshot from instance1
+Use this as Tag:
+	- Key: Name
+	- Value: snapshot1
+Click Create Snapshot.
+Wait until the snapshot Status = Completed.
+Once completed, Terminate the instance.
 
-Step 6
-Once confirmed, kindly clean up your AWS account.
-Edit the file in VSCode editor, save and push to your personal remote repo.
+
+Step 3: Create a Volume from the Snapshot
+------
+
+Go to Elastic Block Store → Snapshots.
+Select the snapshot you created.
+Click Actions → Create Volume from Snapshot.
+Note the Availability Zone (AZ).
+Add the following Tag:
+	- Key: Name
+	- Value: Restored volume
+Create the volume.
+Delete the snapshot.
+Go to Elastic Block Store → Volumes and confirm that the Restored Volume exists.
+
+
+Step 4: Attach Restored Volume to New Instance
+------
+
+Note: Use the same Key Pair and Security Group from the previous lab.
+
+Launch a new EC2 instance in the same Availability Zone as the restored volume.
+Under Network Settings, ensure the correct AZ is selected.
+Create the instance.
+Stop the instance (do not terminate).
+Note the volume attached to the instance.
+Go to Elastic Block Store → Volumes.
+Select the default volume attached to the instance.
+Click Detach Volume.
+Select the Restored Volume (status should be Available).
+Click Actions → Attach Volume.
+Configure:
+	- Instance: Select your new instance
+	- Device Name: change from /dev/sdf to /dev/xvda
+Click Attach Volume.
+Delete the original volume you detached.
+
+
+Step 5: Verify the Restored File
+------
+
+Start the new EC2 instance.
+SSH into the instance.
+Run:
+	ls -la
+   
+Confirm that the file ebs_backup.txt is present.
+Take a screenshot for confirmation.
+
+
+Step 6: Cleanup and Submission
+------
+
+Clean up your AWS account resources:
+	- Terminate instances
+	- Delete volumes if necessary
+Edit the Lab3 file in VSCode with the steps you completed.
+Save the file.
+Push it to your personal GitHub repository.
