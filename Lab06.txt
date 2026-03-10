@@ -1,86 +1,152 @@
-Lab 6
-Step 1
-On VScode terminal navigate to directory AWSLabs and run command git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
-Open the new file(Lab6) in the editor, to allow you add steps you took to complete the lab.
+Step 1: Clone Lab Instructions
+------
 
-Step 2
-Create an EC2 instance with name Webserver1
-A keypair and a public IP address
-Security group that allows SSH traffic 
-Under Advanced details, add the script below in the userdata portion.
+Open the VSCode Terminal.
+Navigate to the AWSLabs directory:
+Pull the latest lab files:
+	git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
+   
+Open the Lab6 file in the editor.
+Use this file to document all the steps you take to complete the lab.
+
+
+Step 2: Create Webserver1
+------
+
+Launch a new EC2 instance with the following settings:
+	- Name: Webserver1
+	- Key Pair: Create or use an existing key pair
+ 	- Public IP: Enabled
+ 	- Security Group: Allow SSH traffic
+
+Under Advanced Details, add the following User Data script:
+
 #!/bin/bash
-# Please make sure to launch Amazon Linux 2
-yum update -y
-yum install httpd -y
+# Amazon Linux 2023 setup
+
+dnf update -y
+dnf install httpd -y
+
 systemctl start httpd
 systemctl enable httpd
+
 echo "<h1>Hello World from Webserver1</h1>" > /var/www/html/index.html
 echo "<h1>Healthy</h1>" > /var/www/html/health.html
-Click Launch instance
 
-Step 3
-Create an EC2 instance with name Webserver2
-A keypair and a public IP address
-Security group that allows SSH traffic 
-Under Advanced details, add the script below in the userdata portion.
+Click Launch Instance.
+
+
+Step 3: Create Webserver2
+------
+
+Launch another EC2 instance with the following settings:
+	- Name: Webserver2
+	- Key Pair: Same key pair
+	- Public IP: Enabled
+	- Security Group: Allow SSH traffic
+
+Under Advanced Details, add the following User Data script:
+
 #!/bin/bash
-# Please make sure to launch Amazon Linux 2
-yum update -y
-yum install httpd -y
+# Amazon Linux 2023 setup
+
+dnf update -y
+dnf install httpd -y
+
 systemctl start httpd
 systemctl enable httpd
+
 echo "<h1>Hello World from Webserver2</h1>" > /var/www/html/index.html
 echo "<h1>Healthy</h1>" > /var/www/html/health.html
-Click Launch instance
 
-Step 4
-On EC2 dashboard click Target groups
-Create target group
-Select instances
-Give it the name "WebserverTG"
-Leave everything as default
-Under Health checks path paste: health.html 
-Click Next, select the 2 instances created above and 
-Click "Include as pending below"
-Create target group
-
-Step 5
-On EC2 dashboard click Load Balancers
-Create Load Balancer
-Select Application Load Balancer and clcik Create
-Give it name "ALB"
-Leave it as internet facing and IPv4
-Select your default VPC and all your public subnets
-Note the name of the default SG assigned to the ALB
-Under Listeners and routing, --> Default action --> select the target group created in step 4
-Create load balancer
-
-Step 6 (Integration)
-Go to the SG of each of the instances and modify Inbound rule
-Edit inbound rule allowing All Traffic from the SG of your load balancer
-Save rules
-Select the Target group created in step 4
-Select the 2 instances and click on register targets
-Verify that the health status shows healthy.
-
-Step 7
-On EC2 dashboard click Load Balancers
-Copy the DNS name of the ALB and 
-post of the chat for verification
-Copy the DNS name of the ALB and paste on a new webpage 
-Send screenshot
-Refresh to verify that the ALB is balancing the traffic between Webserver 1 and 2
-Send Screenshot
-On the DNS name of the ALB add /health.html on a webpage
-Send screenshot
-
-Step 7
-Once confirmed, kindly clean up your AWS account.
-Edit the file in VSCode editor, save and push to your personal remote repo.
+Click Launch Instance.
 
 
+Step 4: Create Target Group
+------
+
+Go to the EC2 Dashboard.
+Click Target Groups.
+Click Create Target Group.
+Configure the following:
+	- Target Type: Instances
+ 	- Name: WebserverTG
+	- Leave other settings as default.
+
+Under Health Checks, change the path to:
+	- health.html
+
+Click Next.
+Select the two instances created earlier.
+Click Include as pending below.
+Click Create Target Group.
 
 
+Step 5: Create Application Load Balancer
+------
+
+Go to the EC2 Dashboard.
+Click Load Balancers.
+Click Create Load Balancer.
+Select Application Load Balancer and click Create.
+Configure the following:
+	- Name: ALB
+	- Scheme: Internet-facing
+	- IP Address Type: IPv4
+
+Select:
+	- Default VPC
+	- All Public Subnets
+
+Note the Security Group automatically assigned to the ALB.
+Under Listeners and Routing → Default Action, select the Target Group created in Step 4.
+Click Create Load Balancer.
 
 
+Step 6: Integrate Load Balancer with Instances
+------
 
+Go to the Security Group of each EC2 instance.
+Edit the Inbound Rules:
+	- Allow All Traffic
+	- Source: Security Group of the Load Balancer
+
+Save the rules.
+Go to Target Groups.
+Select WebserverTG.
+Select both instances and click Register Targets.
+Verify that the Health Status shows Healthy.
+
+
+Step 7: Verify Load Balancer
+------
+
+Go to EC2 Dashboard → Load Balancers.
+Copy the DNS Name of the Application Load Balancer.
+Post the DNS name in the group chat for verification.
+Paste the DNS name into a browser and open it.
+Take a screenshot.
+Refresh the page several times to verify that traffic is being balanced between:
+	- Webserver1
+ 	- Webserver2
+
+Take another screenshot showing the load balancing.
+Test the health check page by visiting:
+	<ALB-DNS-NAME>/health.html
+
+Take a screenshot.
+
+
+Step 8: Cleanup and Submission
+------
+
+Clean up AWS resources:
+	- Terminate EC2 instances
+	- Delete the Load Balancer
+	- Delete the Target Group
+	- Remove associated security groups if needed
+
+Return to VSCode.
+Edit the Lab6 file and document all the steps taken.
+Save the file.
+Push the changes to your personal GitHub repository
