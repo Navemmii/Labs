@@ -1,4 +1,5 @@
 Step 1: Create a GitHub Repository
+------
 
 Log into your GitHub account.
 Click "Create a new repository".
@@ -7,26 +8,31 @@ Ensure Public is selected.
 Click "Create repository".
 
 Step 2: Clone the Lab Repo to Your Local Machine
+------
 
 On your local machine, create a folder named AWSlabs.
 Open VSCode, then click Terminal to open a command line terminal.
 If on Windows, click the dropdown arrow in the terminal panel and switch from PowerShell to WSL.
 Navigate into the AWSlabs folder.
 Run the following commands one at a time:
-
-- git clone https://github.com/awscloudessentials/intro-to-aws-lab.git
-- cd intro-to-aws-lab
-- ls -la
+    git clone https://github.com/awscloudessentials/intro-to-aws-lab.git
+    cd intro-to-aws-lab
+    ls -la
 
 Step 3: Create a Personal Access Token (GitHub)
+------
 
 To push to your personal GitHub account, you'll need a Personal Access Token (PAT).
-Creating a Personal Access Token — https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+Creating a Personal Access Token here
+    https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
 Use this token in place of your password when prompted during a git push
 
 Step 4: Push the Repo to Your GitHub Account
+------
 
 Run the following command, replacing the URL with your own repo URL from Step 1:
--git push https://github.com/YOUR_USERNAME/intro-to-aws-labs.git
+    git push https://github.com/YOUR_USERNAME/intro-to-aws-labs.git
+
 When prompted for credentials, use your GitHub username and your Personal Access Token (from Step 3) as the password.
 Go to your GitHub repo in the browser and verify the files appear there.
