@@ -1,11 +1,15 @@
-Step 1 — Pull Lab File
+Step 1: Pull Lab File
+------
 
 Open your VSCode terminal and run:
-- cd intro-to-aws-lab
-- git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
+   cd intro-to-aws-lab
+   git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
+
 Then open Lab02.txt in VSCode to read any additional instructions included there.
 
-Step 2 — Create a Key Pair
+
+Step 2: Create a Key Pair
+------
 
 In the AWS Console, search for EC2 and open it
 In the left sidebar, scroll to Network & Security → Key Pairs
@@ -14,9 +18,12 @@ Fill in:
    - Name: Linux
    - Key pair type: RSA
    - Private key file format: .pem
-5. Click Create key pair — the .pem file will auto-download to your machine
 
-Step 3 — Create a Security Group
+Click Create key pair — the .pem file will auto-download to your machine
+
+
+Step 3: Create a Security Group
+------
 
 In EC2 left sidebar → Network & Security → Security Groups
 Click Create security group
@@ -33,7 +40,9 @@ Under Inbound rules, add three rules:
 
 Leave outbound rules as default, then click Create security group
 
-Step 4 — Create a Launch Template
+
+Step 4: Create a Launch Template
+------
 
 In EC2 left sidebar → Instances → Launch Templates
 Click Create launch template
@@ -56,10 +65,12 @@ echo "Healthy" > /var/www/html/health.html
 
 Click Create launch template
 
-Step 5 — Document & Push
 
-Open `Lab2.txt` in VSCode and add notes about anything you did that wasnt in the original instructions
+Step 5: Document & Push
+------
+
+Open `Lab02.txt` in VSCode and add notes about anything you did that wasnt in the original instructions
 Save the file, then in the terminal run:
--git add Lab2.txt
--git commit -m "launch template demo"
--git push
+   git add Lab02.txt
+   git commit -m "launch template demo"
+   git push
