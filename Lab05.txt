@@ -5,131 +5,156 @@ Open the VSCode Terminal.
 Navigate to the AWSLabs directory:
 Pull the latest lab files:
 	git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
-
 Open the Lab5 file in the editor.
 Use this file to document the steps you take while completing the lab.
 
 
-Step 2: Create a NAT Gateway
+Step 2: Verify Internet Gateway and Public Route Table
 ------
 
-Go to the AWS Management Console.
-Navigate to VPC Dashboard.
-Select NAT Gateways.
+Note: Before creating the NAT Gateway, verify that the VPC has an Internet Gateway attached and that the public subnet can access the internet
+Go to VPC Dashboard → Internet Gateways
+Verify that an Internet Gateway exists and is attached to your Default VPC.
+Example:
+	igw-xxxxxxxx
+Next, verify the public subnet route table.
+Go to VPC → Route Tables and find the route table associated with your public subnet and confirm it has this route:
+	Destination: 0.0.0.0/0
+	Target: Internet Gateway (igw-xxxxxxxx)
+This route allows resources in the public subnet to access the internet.
+
+
+Step 3: Create a NAT Gateway
+------
+
+Go to VPC Dashboard → NAT Gateways.
 Click Create NAT Gateway.
 Configure the following:
-	- Name: NAT
-	- Subnet: Select a public subnet
-	- Connectivity Type: Public
+	Name: NAT
+	Subnet: Select a PUBLIC subnet
+	Connectivity Type: Public
 Click Allocate Elastic IP.
 Click Create NAT Gateway.
+Wait until the NAT Gateway Status becomes "Available" before continuing.
+IMPORTANT: The NAT Gateway must be created in a public subnet so it can access the internet through the Internet Gateway.
 
-
-Step 3: Create and Configure a Private Route Table
+Step 4: Create and Configure a Private Route Table
 ------
 
 Go to VPC Dashboard → Route Tables.
 Click Create Route Table.
 Configure:
-	- Name: privateRT
-	- VPC: Select your Default VPC
-
+	Name: privateRT
+	VPC: Default VPC
 Click Create Route Table.
 Select the newly created route table.
 Go to the Routes tab.
 Click Edit Routes → Add Route.
-Configure the route:
-	- Destination: 0.0.0.0/0
-	- Target: Select the NAT Gateway created in Step 2
-
+Add the following route:
+	Destination: 0.0.0.0/0
+	Target: NAT Gateway created in Step 3
 Click Save Changes.
-Modify Subnet Associations
-Select the Default Route Table.
-Go to Subnet Associations.
+This route allows private subnet resources to access the internet through the NAT Gateway.
+
+
+Step 5: Configure Subnet Associations
+------
+
+Now we will convert one subnet into a private subnet.
+Go to Route Tables → Default Route Table.
+Open Subnet Associations.
 Click Edit Subnet Associations.
-Unselect one subnet and note its Subnet ID. (This subnet will be used to launch the private EC2 instance.)
+Unselect one subnet from the list and note its Subnet ID.
+This subnet will become the private subnet used for the private EC2 instance.
 Click Save Associations.
 Select the privateRT route table.
 Go to Subnet Associations → Edit Subnet Associations.
 Select the subnet removed from the default route table.
 Click Save Associations.
+Confirm that the private subnet is now associated with the privateRT route table.
 
 
-Step 4: Launch Public and Private EC2 Instances
+Step 6: Launch Public and Private EC2 Instances
 ------
 
 Use the same key pair for both instances.
 
-Public EC2 Instance
-Create an EC2 instance with the following:
-	- Name: public-ec2
-	- Public IP: Enabled
-	- Internet Access: Enabled
-	- SSH Access: Enabled
+# Public EC2 Instance
 
-Private EC2 Instance
+Create an EC2 instance with the following configuration:
+	Name: public-ec2
+	AMI: Amazon Linux 2023
+	Auto-assign Public IP: Enabled
+	Subnet: Public Subnet
+Security Group:
+	SSH
+	Source: Your IP address
+
+This instance will act as a bastion host used to access the private EC2 instance.
+
+# Private EC2 Instance
+
 Create another EC2 instance with the following configuration:
-	- Name: private-ec2
-	- Subnet: Select the subnet configured in Step 3
-	- Auto-assign Public IP: Disabled
+	Name: private-ec2
+	AMI: Amazon Linux 2023
+	Subnet: The subnet configured in Step 5
+	Auto-assign Public IP: Disabled
 Security Group configuration:
-	- Allow All IPv4 traffic from:
-		- Source: Private IP of the public instance
-	- Allow SSH from All sources
+	SSH
+	Source: Private IP of the public EC2 instance
+	All ICMP - IPv4 (CRITICAL: Do not enable this professionally, for security reasons)
+	Source: VPC's CIDR 
+
+This ensures that only the public EC2 instance can connect to the private EC2 instance.
 
 
-Step 5: Set Up SSH Agent Forwarding
+Step 7: Set Up SSH Agent Forwarding
 ------
 
-Open WSL terminal.
+Open a WSL terminal.
 Navigate to the location of your key pair.
 Move the key to the SSH directory:
 	mv <keypairname> ~/.ssh/<keyname>
-
-Start the SSH agent:
-	eval $(ssh-agent)
-
 Set correct permissions:
 	chmod 400 ~/.ssh/<keyname>
-
+Start the SSH agent:
+	eval $(ssh-agent)
 Add the key to the SSH agent:
-	ssh-add -k ~/.ssh/<keyname>
-
+	ssh-add ~/.ssh/<keyname>
 Connect to the public EC2 instance:
 	ssh -A -i ~/.ssh/<keyname> ec2-user@<public-ip-of-public-ec2>
 
 
-Step 6: Verify Connectivity
+Step 8: Verify Connectivity
 ------
 
-Run the following commands and take screenshots for verification.
-Test Internet Connectivity
+Run the following commands and take screenshots.
+Test Internet Connectivity from Public Instance
 	ping google.com
-
+	or
+	curl google.com
 Test Connectivity to Private Instance
 	ping <private-ip-of-private-ec2>
-
 SSH into Private Instance
 	ssh ec2-user@<private-ip-of-private-ec2>
-
-Verify that the IP address is different, confirming you are inside the private instance.
+Verify that the IP address changes, confirming that you are now inside the private EC2 instance.
 Verify Internet Access from Private Instance
 	ping google.com
+	or
+	curl google.com
+This should work because the NAT Gateway allows outbound internet access for private instances.
+Take screenshots for verification.
 
-This should work because the NAT Gateway allows outbound internet access.
-Take screenshots for each verification step.
 
-
-Step 7: Cleanup and Submission
+Step 9: Cleanup and Submission
 ------
 
 Clean up your AWS resources:
-	- Terminate EC2 instances
-	- Delete NAT Gateway
-	- Delete route tables if needed
-	- Manually release the Elastic IP
-
+	Terminate EC2 instances
+	Delete NAT Gateway
+	Delete route tables if necessary
+	Release the Elastic IP
 Return to VSCode.
-Edit the Lab5 file and document all the steps you performed.
+Edit the Lab5 file and document the steps you performed.
 Save the file.
-Push the changes to your personal GitHub repository:
+Push the changes to your personal GitHub repository.
