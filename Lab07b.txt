@@ -1,0 +1,167 @@
+Step 1: Clone Lab Instructions
+------
+
+Open the VSCode Terminal.
+Navigate to the AWSLabs directory
+Pull the latest lab files:
+	git pull https://github.com/awscloudessentials/intro-to-aws-lab.git
+
+Open the Lab7 file in the editor.
+Use this file to document all the steps you take while completing the lab.
+
+
+Step 2: Create Launch Template (LT)
+------
+
+Go to the EC2 Dashboard.
+Click Launch Templates.
+Click Create Launch Template.
+Configure the following:
+	- Name: ASG-LT
+ 	- Description: Webservers for ASG
+ 	- AMI: Amazon Linux 2023 (kernel-6.1)
+ 	- Instance Type: t3.micro
+ 	- Security Group: Allow SSH from 0.0.0.0/0
+
+Under Advanced Details → User Data, paste the script below:
+
+#!/bin/bash
+
+dnf update -y
+dnf install httpd -y
+
+systemctl start httpd
+systemctl enable httpd
+
+echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+echo "<h1>Healthy</h1>" > /var/www/html/health.html
+
+Click Create Launch Template.
+
+
+Step 3: Create Target Group (TG)
+
+Go to the EC2 Dashboard.
+Click Target Groups.
+Click Create Target Group.
+Configure the following:
+	- Target Type: Instances
+	- Name: ASG-TG
+	- Leave all other settings as default.
+
+Under Health Checks, set the path to:
+	- /health.html
+
+Do not register any instances.
+Click Create Target Group.
+
+
+Step 4: Create Application Load Balancer (ALB)
+------
+
+Go to EC2 Dashboard → Load Balancers.
+Click Create Load Balancer.
+Select Application Load Balancer.
+Configure:
+	- Name: ASG-ALB
+ 	- Scheme: Internet-facing
+ 	- IP Address Type: IPv4
+
+Select:
+	- Your Default VPC
+ 	- All Public Subnets
+
+Note the Security Group assigned to the ALB.
+Under Listeners and Routing, select the Target Group created in Step 3.
+Click Create Load Balancer.
+
+
+Step 5: Create Auto Scaling Group (ASG)
+------
+
+Go to EC2 Dashboard → Auto Scaling Groups.
+Click Create Auto Scaling Group.
+Configure:
+	- Name: ASG
+	- Launch Template: Select ASG-LT
+
+Click Next.
+Select:
+	- Your VPC
+	- Your Subnets
+
+Click Next.
+Attach to the load balancer:
+	- Select Attach to an existing load balancer
+	- Choose Target Group
+	- Select ASG-TG
+
+Click Next.
+Configure group size:
+	- Desired Capacity: 2
+	- Minimum Capacity: 2
+	- Maximum Capacity: 2
+
+Configure Scaling Policy
+Under Scaling Policies:
+	- Select Target Tracking Scaling Policy
+	- Metric Type: Average CPU Utilization
+	- Target Value: 30%
+
+Click Next.
+Click Create Auto Scaling Group.
+
+
+Step 6: Integration
+------
+
+Verify that two EC2 instances are launching automatically.
+Go to the Security Group of the EC2 instances.
+Edit Inbound Rules and add:
+	- Type: All Traffic
+	- Source: Security Group of the ALB
+
+Save the rules.
+Go to Load Balancers.
+Copy the DNS Name of the ALB.
+Paste the DNS name into a browser.
+Take a screenshot showing the private IP address of instance 1.
+Refresh the page to verify that the Load Balancer distributes traffic between both EC2 instances.
+Take another screenshot showing the private IP address of instance 2.
+
+
+Step 7: Verify Auto Scaling Functionality
+------
+
+SSH into one of the EC2 instances.
+Install the stress tool:
+	sudo dnf install stress -y
+
+Run a CPU stress test:
+	sudo stress --cpu 2 --timeout 200
+
+Go back to the EC2 Dashboard.
+Verify that:
+	- The stressed instance is terminated
+	- A new EC2 instance is automatically launched
+
+Take a screenshot for confirmation.
+Refresh the page using the ALB DNS Name.
+Verify that the Load Balancer now routes traffic to the new EC2 instance.
+Take a screenshot showing the private IP address of the new instance.
+
+
+Step 8: Cleanup and Submission
+------
+
+Clean up AWS resources:
+	- Delete Auto Scaling Group
+	- Delete Launch Template
+	- Delete Load Balancer
+	- Delete Target Group
+	- Terminate EC2 instances
+
+Return to VSCode.
+Edit the Lab7 file and document the steps you followed.
+Save the file.
+Push the changes to your personal GitHub repository
